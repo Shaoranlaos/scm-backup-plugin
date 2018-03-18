@@ -52,7 +52,7 @@
   </packages>
 
   <resources>
-    
+    <script>/de/shaoranlaos/scm_backup_plugin/backup_to_svn.js</script>
   </resources>
 
 </plugin>

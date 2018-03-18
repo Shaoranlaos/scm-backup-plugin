@@ -31,9 +31,11 @@ public class RepositoryCreationListener implements RepositoryListener {
 	public void onEvent(Repository repo, HandlerEvent event) {
 		LOG.info("Logevent received for Repository {}: {}", repo.getName(), event);
 
+		String repoName = repo.getName();
 		switch (event) {
 		case CREATE:
 			
+			context.getGlobalConfiguration().getExistingRemoteRepos().add(repoName);
 			break;
 		case DELETE:
 			break;
