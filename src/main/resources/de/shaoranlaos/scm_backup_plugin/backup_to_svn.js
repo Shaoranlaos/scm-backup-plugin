@@ -9,12 +9,6 @@ registerGeneralConfigPanel({
 		inputValue : 'true'
 	  },
 	  {
-		xtype : 'hidden',
-		fieldLabel : 'savedRepos',
-		name : 'remoteRepos',
-		allowBlank : false
-	  },
-	  {
 		xtype : 'textfield',
 		fieldLabel : 'Remote SVN Server URL',
 		name : 'remoteSvnServer',

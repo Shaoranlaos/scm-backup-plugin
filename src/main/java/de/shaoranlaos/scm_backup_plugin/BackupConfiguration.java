@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import sonia.scm.security.CipherHandler;
@@ -21,7 +22,7 @@ public class BackupConfiguration {
 	@XmlElement(name = "active", defaultValue = "false", type = Boolean.class)
 	private Boolean active = false;
 	
-	@XmlElement(name = "remoteRepos", type = HashSet.class)
+	@XmlElementWrapper(name = "remoteRepos")
 	private Set<String> existingRemoteRepos = new HashSet<>();
 
 	@XmlElement(name = "remoteSvnServer", required = true)
@@ -38,6 +39,8 @@ public class BackupConfiguration {
 
 	@XmlElement(name = "localBackupPath", required = true)
 	private String localBackupPath;
+
+
 
 	public Set<String> getExistingRemoteRepos() {
 		return existingRemoteRepos;
@@ -64,11 +67,19 @@ public class BackupConfiguration {
 	}
 
 	public String getRemoteSvnPassword() {
-		return cipher.decode(remoteSvnPassword);
+		if (remoteSvnPassword == null) {
+			return null;
+		} else {
+			return cipher.decode(remoteSvnPassword);
+		}
 	}
 
 	public void setRemoteSvnPassword(String remoteSvnPassword) {
-		this.remoteSvnPassword = cipher.encode(remoteSvnPassword);
+		if (remoteSvnPassword == null) {
+			this.remoteSvnPassword = null;
+		} else {
+			this.remoteSvnPassword = cipher.encode(remoteSvnPassword);
+		}
 	}
 
 	public Integer getBackupRate() {
@@ -93,5 +104,17 @@ public class BackupConfiguration {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public BackupConfiguration cloneWithoutSet() {
+		BackupConfiguration config = new BackupConfiguration();
+		config.setActive(getActive());
+		config.setBackupRate(getBackupRate());
+		config.setExistingRemoteRepos(null);
+		config.setLocalBackupPath(getLocalBackupPath());
+		config.setRemoteSvnPassword(getRemoteSvnPassword());
+		config.setRemoteSvnServer(getRemoteSvnServer());
+		config.setRemoteSvnUser(getRemoteSvnUser());
+		return null;
 	}
 }

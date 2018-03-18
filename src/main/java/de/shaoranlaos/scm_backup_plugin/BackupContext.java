@@ -35,12 +35,12 @@ public class BackupContext {
 
 		executor = Executors.newScheduledThreadPool(1);
 		if (getGlobalConfiguration().getActive()) {
-			LOG.info("Start BackupRunner as backgroundthread.");
 			startBackgroundTask();
 		}
 	}
 	
 	private void startBackgroundTask() {
+		LOG.info("Start BackupRunner as backgroundthread.");
 		executor.scheduleAtFixedRate(new BackupRunner(),
 				store.get().getBackupRate(),
 				store.get().getBackupRate(),

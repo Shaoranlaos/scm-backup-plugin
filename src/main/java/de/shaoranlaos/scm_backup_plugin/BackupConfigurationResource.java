@@ -25,7 +25,7 @@ public class BackupConfigurationResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public BackupConfiguration getConfig()
 	{
-		return context.getGlobalConfiguration();
+		return context.getGlobalConfiguration().cloneWithoutSet();
 	}
 
 	@POST
@@ -33,6 +33,7 @@ public class BackupConfigurationResource {
 	public Response setConfig(@Context UriInfo uriInfo, BackupConfiguration config)
 	        throws IOException
 	{
+		config.setExistingRemoteRepos(context.getGlobalConfiguration().getExistingRemoteRepos());
 		context.setGlobalConfiguration(config);
 
 		return Response.created(uriInfo.getRequestUri()).build();
