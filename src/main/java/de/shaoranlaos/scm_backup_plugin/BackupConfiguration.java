@@ -3,21 +3,15 @@ package de.shaoranlaos.scm_backup_plugin;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import sonia.scm.security.CipherHandler;
-
 @XmlRootElement(name = "backup-to-svn")
 @XmlAccessorType(XmlAccessType.NONE)
 public class BackupConfiguration {
-
-	@Inject
-	private CipherHandler cipher;
 
 	@XmlElement(name = "active", defaultValue = "false", type = Boolean.class)
 	private Boolean active = false;
@@ -70,7 +64,7 @@ public class BackupConfiguration {
 		if (remoteSvnPassword == null) {
 			return null;
 		} else {
-			return cipher.decode(remoteSvnPassword);
+			return CipherUtil.decode(remoteSvnPassword);
 		}
 	}
 
@@ -78,7 +72,7 @@ public class BackupConfiguration {
 		if (remoteSvnPassword == null) {
 			this.remoteSvnPassword = null;
 		} else {
-			this.remoteSvnPassword = cipher.encode(remoteSvnPassword);
+			this.remoteSvnPassword = CipherUtil.encode(remoteSvnPassword);
 		}
 	}
 
@@ -116,5 +110,12 @@ public class BackupConfiguration {
 		config.setRemoteSvnServer(getRemoteSvnServer());
 		config.setRemoteSvnUser(getRemoteSvnUser());
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return "BackupConfiguration [active=" + active + ", existingRemoteRepos=" + existingRemoteRepos
+				+ ", remoteSvnServer=" + remoteSvnServer + ", remoteSvnUser=" + remoteSvnUser + ", remoteSvnPassword="
+				+ remoteSvnPassword + ", backupRate=" + backupRate + ", localBackupPath=" + localBackupPath + "]";
 	}
 }

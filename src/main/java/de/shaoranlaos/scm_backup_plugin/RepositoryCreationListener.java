@@ -34,10 +34,12 @@ public class RepositoryCreationListener implements RepositoryListener {
 		String repoName = repo.getName();
 		switch (event) {
 		case CREATE:
-			
 			context.getGlobalConfiguration().getExistingRemoteRepos().add(repoName);
+			context.storeConfig();
 			break;
 		case DELETE:
+			context.getGlobalConfiguration().getExistingRemoteRepos().remove(repoName);
+			context.storeConfig();
 			break;
 		default:
 			break;

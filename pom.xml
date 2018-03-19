@@ -46,6 +46,11 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+    	<groupId>sonia.svnkit</groupId>
+    	<artifactId>svnkit</artifactId>
+    	<version>1.9.0-scm3</version>
+    </dependency>
   </dependencies>
   
   <build>

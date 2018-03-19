@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import sonia.scm.security.CipherHandler;
 import sonia.scm.store.Store;
 import sonia.scm.store.StoreFactory;
 
@@ -21,27 +22,31 @@ public class BackupContext {
 	private static final String STORE_NAME = "backup_configs";
 
 	private Store<BackupConfiguration> store;
+	private BackupConfiguration config;
+
 	private ScheduledExecutorService executor;
+	@Inject
+	private BackupRunner backupRunner;
 
 	@Inject
-	public BackupContext(StoreFactory storeFactory) {
+	public BackupContext(StoreFactory storeFactory, CipherHandler cipher) {
+		CipherUtil.setCipherHandler(cipher);
 		this.store = storeFactory.getStore(BackupConfiguration.class, STORE_NAME);
 		
-
-		if (store.get() == null) {
+		config = store.get(); 
+		if (config == null) {
 			LOG.info("No Config found, Create an empty one.");
 			setGlobalConfiguration(new BackupConfiguration());
 		}
+	}
 
+	private void createExecutor() {
 		executor = Executors.newScheduledThreadPool(1);
-		if (getGlobalConfiguration().getActive()) {
-			startBackgroundTask();
-		}
 	}
 	
 	private void startBackgroundTask() {
 		LOG.info("Start BackupRunner as backgroundthread.");
-		executor.scheduleAtFixedRate(new BackupRunner(),
+		executor.scheduleAtFixedRate(backupRunner,
 				store.get().getBackupRate(),
 				store.get().getBackupRate(),
 				TimeUnit.MINUTES);
@@ -52,14 +57,24 @@ public class BackupContext {
 	}
 
 	public void setGlobalConfiguration(BackupConfiguration globalConfiguration) {
-		if (!globalConfiguration.getActive()) {
+		if (globalConfiguration == null) {
+			throw new IllegalArgumentException("globalConfiguration can not be null!");
+		}
+
+		if (!globalConfiguration.getActive() && (config != null && config.getActive())) {
 			executor.shutdown();
-		} else {
+		} else if (globalConfiguration.getActive() && (config == null || !config.getActive())) {
 			if (executor == null || executor.isShutdown()) {
-				executor = Executors.newScheduledThreadPool(1);
+				createExecutor();
 				startBackgroundTask();
 			}
 		}
-		store.set(globalConfiguration);
+
+		this.config = globalConfiguration;
+		storeConfig();
+	}
+
+	public void storeConfig() {
+		store.set(config);
 	}
 }
