@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import sonia.scm.repository.Repository;
+import sonia.scm.repository.RepositoryManager;
 import sonia.scm.security.CipherHandler;
 import sonia.scm.store.Store;
 import sonia.scm.store.StoreFactory;
@@ -29,14 +31,20 @@ public class BackupContext {
 	private BackupRunner backupRunner;
 
 	@Inject
-	public BackupContext(StoreFactory storeFactory, CipherHandler cipher) {
+	public BackupContext(StoreFactory storeFactory, CipherHandler cipher, RepositoryManager manager) {
 		CipherUtil.setCipherHandler(cipher);
 		this.store = storeFactory.getStore(BackupConfiguration.class, STORE_NAME);
 		
 		config = store.get(); 
 		if (config == null) {
 			LOG.info("No Config found, Create an empty one.");
-			setGlobalConfiguration(new BackupConfiguration());
+			config = new BackupConfiguration();
+			for(Repository repo : manager.getAll()) {
+				if (repo.getType() == "svn") {
+					config.getExistingRemoteRepos().add(repo.getName());
+				}
+			}
+			setGlobalConfiguration(config);
 		}
 	}
 
