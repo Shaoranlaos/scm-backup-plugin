@@ -23,6 +23,7 @@ registerGeneralConfigPanel({
 	  },
 	  {
 		xtype : 'textfield',
+		inputType: 'password',
 		fieldLabel : 'Remote SVN Password',
 		name : 'remoteSvnPassword',
 		allowBlank : false

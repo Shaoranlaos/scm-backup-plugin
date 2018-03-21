@@ -45,6 +45,12 @@
       <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+    	<groupId>sonia.scm.plugins</groupId>
+  		<artifactId>scm-svn-plugin</artifactId>
+  		<version>${project.parent.version}</version>
+    </dependency>
 
     <dependency>
     	<groupId>sonia.svnkit</groupId>

@@ -61,6 +61,7 @@ public class BackupConfiguration {
 	}
 
 	public String getRemoteSvnPassword() {
+//		return remoteSvnPassword;
 		if (remoteSvnPassword == null) {
 			return null;
 		} else {
@@ -69,6 +70,7 @@ public class BackupConfiguration {
 	}
 
 	public void setRemoteSvnPassword(String remoteSvnPassword) {
+//		this.remoteSvnPassword = remoteSvnPassword;
 		if (remoteSvnPassword == null) {
 			this.remoteSvnPassword = null;
 		} else {
@@ -109,7 +111,7 @@ public class BackupConfiguration {
 		config.setRemoteSvnPassword(getRemoteSvnPassword());
 		config.setRemoteSvnServer(getRemoteSvnServer());
 		config.setRemoteSvnUser(getRemoteSvnUser());
-		return null;
+		return config;
 	}
 
 	@Override
