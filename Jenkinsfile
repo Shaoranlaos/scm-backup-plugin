@@ -6,7 +6,8 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh 'mvn -B -DskipTests clean scmp:package' 
+                sh 'mvn -B -DskipTests clean scmp:package'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
