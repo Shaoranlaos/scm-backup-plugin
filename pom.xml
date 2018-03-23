@@ -12,9 +12,10 @@
   <groupId>de.shaoranlaos</groupId>
   <artifactId>scm-backup-plugin</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>${project.artifactId}</name>
   <description>Plugin for scm-manager that allows to automatically backup svn repositories as dumps on a remote svn server.</description>
+  <url>https://github.com/Shaoranlaos/scm-backup-plugin</url>
 
   <dependencies>
 
@@ -36,6 +37,12 @@
     	<artifactId>slf4j-api</artifactId>
     	<version>1.7.22</version>
     </dependency>
+    
+    <dependency>
+    	<groupId>sonia.scm.plugins</groupId>
+  		<artifactId>scm-svn-plugin</artifactId>
+  		<version>${project.parent.version}</version>
+    </dependency>
 
     <!-- test scope -->
 
@@ -44,18 +51,6 @@
       <artifactId>scm-test</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-    	<groupId>sonia.scm.plugins</groupId>
-  		<artifactId>scm-svn-plugin</artifactId>
-  		<version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-    	<groupId>sonia.svnkit</groupId>
-    	<artifactId>svnkit</artifactId>
-    	<version>1.9.0-scm3</version>
     </dependency>
     
   </dependencies>
