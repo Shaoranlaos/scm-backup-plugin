@@ -12,7 +12,7 @@
   <groupId>de.shaoranlaos</groupId>
   <artifactId>scm-backup-plugin</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <name>${project.artifactId}</name>
   <description>Plugin for scm-manager that allows to automatically backup svn repositories as dumps on a remote svn server.</description>
   <url>https://github.com/Shaoranlaos/scm-backup-plugin</url>

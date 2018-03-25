@@ -67,7 +67,9 @@ public class BackupRunner implements Runnable {
 		} else {
 			LOG.info("Delete old backupfiles.");
 			for (File delFile : localBackupDir.listFiles()) {
-				delFile.delete();
+				if (!delFile.getName().equals(".svn")) {
+					delFile.delete();
+				}
 			}
 		}
 
