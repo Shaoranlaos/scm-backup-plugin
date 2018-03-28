@@ -15,8 +15,8 @@ import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.BasicAuthenticationManager;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
-import org.tmatesoft.svn.core.internal.wc.DefaultSVNAuthenticationManager;
 import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNCommitPacket;
@@ -50,7 +50,7 @@ public class BackupRunner implements Runnable {
 		
 		DefaultSVNOptions opts = new DefaultSVNOptions();
 		opts.setAuthStorageEnabled(false);
-		ISVNAuthenticationManager auth = new DefaultSVNAuthenticationManager(null, false, remoteSvnUser, remoteSvnPassword.toCharArray(), null, null);
+		ISVNAuthenticationManager auth = BasicAuthenticationManager.newInstance(remoteSvnUser, remoteSvnPassword.toCharArray());
 		SVNClientManager manager = SVNClientManager.newInstance(opts, auth);
 		File baseRepoDir = scmConfigStore.get().getRepositoryDirectory();
 		File localBackupDir = new File(localBackupPath);
