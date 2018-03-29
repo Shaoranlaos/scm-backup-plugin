@@ -8,6 +8,7 @@ pipeline {
             steps {
                 sh 'mvn -B -DskipTests clean scmp:package'
                 archiveArtifacts artifacts: '**/target/*.scmp', fingerprint: true
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
